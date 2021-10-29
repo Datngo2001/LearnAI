@@ -47,6 +47,9 @@ def astar(maze, start, end):
     # Add the start node
     open_list.append(start_node)
 
+    loop = 0
+    f = open("log.txt", "a")
+
     # Loop until you find the end
     while len(open_list) > 0:
 
@@ -113,16 +116,27 @@ def astar(maze, start, end):
             child.f = child.g + child.h
 
             # Child is already in the open list
-            isInOpenButSmallerPathCost = False
+            isInOpenButHigherPathCost = False
             for open_node in open_list:
                 if child == open_node and child.g > open_node.g:
-                    isInOpenButSmallerPathCost = True
-                    continue
-            if(isInOpenButSmallerPathCost):
+                    isInOpenButHigherPathCost = True
+                    break
+            if(isInOpenButHigherPathCost):
                 continue
 
             # Add the child to the open list
             open_list.append(child)
+
+        f.write("\nLoop" + str(loop) + "=============================\n")
+        f.write("\nExpand:" + str(current_node.position))
+        f.write("\nProntier:\n")
+        for prontier in open_list:
+            f.write(str(prontier.position) +
+                    ": h=" + str(prontier.h) + "\n")
+
+        loop = loop + 1
+
+    f.close()
 
 
 def findBtn(ui, row, col):
